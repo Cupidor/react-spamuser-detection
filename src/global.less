@@ -1,0 +1,157 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// 兼容IE11
+@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ant-design-pro > .ant-layout {
+    min-height: 100vh;
+  }
+}
+
+.ant-layout-header,
+.ant-pro-global-header,
+.ant-menu.ant-menu-dark,
+//.ant-pro-sider,
+.ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+  background: #0170bf;
+  color: #fff;
+}
+.ant-menu.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-dark .ant-menu-submenu-selected,
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
+  background: #0099ff;
+}
+
+.ant-menu-dark .ant-menu-item > a,
+.ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+.ant-menu-submenu-active,
+.ant-menu-submenu-selected {
+  color: #fff;
+}
+.ant-pro-top-nav-header-menu .ant-menu.ant-menu-horizontal {
+  text-align: right;
+}
+
+.ant-menu-inline-collapsed > .ant-menu-item .anticon {
+  font-size: 18px;
+}
+// 内容区
+.MyMain {
+  height: calc(100vh - 48px - 48px);
+}
+.MyContent {
+  height: calc(100% - 47px);
+  background-color: #ffffff;
+  .MyHeader {
+    height: 60px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #d7d7d7;
+    .MyTitle {
+      display: flex;
+      align-items: center;
+      .MyTitlePoint {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #0170bf;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .MyTitleImg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+  .MyBody {
+    height: calc(100% - 60px);
+    display: flex;
+    .MyBodyRight {
+      width: 100%;
+      overflow-y: auto;
+    }
+  }
+}
+.MyFooter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.MyList::-webkit-scrollbar {
+  display: none;
+}
+.MyBodyRight::-webkit-scrollbar {
+  display: none;
+}
+.font_green{
+  color:#093 !important;
+}
+.font_orange{
+  color:#f60 !important;
+}
+.photo_viewer{
+  :global{
+    .PhotoView-PhotoSlider__Backdrop{
+      background-color: rgba(0, 0, 0, 0.65)!important;
+    }
+    .PhotoView-PhotoSlider__FooterWrap,.PhotoView-PhotoSlider__BannerWrap{
+      background-color: transparent;
+    }
+  }
+
+}
