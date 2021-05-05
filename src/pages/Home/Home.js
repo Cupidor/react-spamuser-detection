@@ -3,7 +3,7 @@ import { Table, message, Tag } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import global from '@/global.less';
 import Footer from '@/components/Footer';
-import { queryAllBlogUser } from '@/services/user';
+import { queryBlogByCondition } from '@/services/blog_user';
 import * as echarts from 'echarts/core';
 import {
   TimelineComponent,
@@ -162,7 +162,13 @@ class Index extends PureComponent {
     this.setState({
       loading: true
     })
-    let res = await queryAllBlogUser();
+    let res = await queryBlogByCondition(
+      {
+        limit: 100,
+        offset: 0,
+        scrapyState: true
+      }
+    );
     if (res.code === '0000') {
       message.destroy()
       for (let item of res.result) {
@@ -225,7 +231,7 @@ class Index extends PureComponent {
 
   getOption() {
     var step = ecStat.clustering.hierarchicalKMeans(this.state.originalData, {
-      clusterCount: 6,
+      clusterCount: 3,
       outputType: 'single',
       outputClusterIndexDimension: DIM_CLUSTER_INDEX,
       outputCentroidDimensions: CENTER_DIM_IDX,
@@ -299,64 +305,7 @@ class Index extends PureComponent {
 
 
   render() {
-    const { selectedTags, users, loading } = this.state
-    const columns = [
-      {
-        title: '用户名',
-        dataIndex: 'uname',
-        key: 'uname',
-      },
-      {
-        title: '关注数',
-        dataIndex: 'focusNum',
-        key: 'focusNum',
-      },
-      {
-        title: '粉丝数',
-        dataIndex: 'fansNum',
-        key: 'fansNum',
-      },
-      {
-        title: '互粉数',
-        dataIndex: 'eachFansNum',
-        key: 'eachFansNum',
-      },
-      {
-        title: '微博数',
-        dataIndex: 'blogNum',
-        key: 'blogNum',
-      },
-      {
-        title: '用户权威度',
-        dataIndex: 'authority',
-        key: 'authority',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
-      },
-      {
-        title: '用户关注度',
-        dataIndex: 'friendsRate',
-        key: 'friendsRate',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
-      },
-      {
-        title: '纯粉丝度',
-        dataIndex: 'realFollow',
-        key: 'realFollow',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
-      },
-      {
-        title: '用户头像特征',
-        dataIndex: 'headPortrait',
-        key: 'headPortrait',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
-      },
-      {
-        title: '近期活跃度',
-        dataIndex: 'recentAtivity',
-        key: 'recentAtivity',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
-      }
-    ];
+    const { selectedTags } = this.state
     return (
       <div className={global.MyMain}>
         <div className={global.MyContent}>
@@ -379,9 +328,8 @@ class Index extends PureComponent {
                 notMerge={true}
                 lazyUpdate={true}
                 theme={'theme_name'}
-                style={{ width: '100%', height: 500 }}
+                style={{ width: '100%', height: '100%' }}
               />
-              <Table dataSource={users} columns={columns} loading={loading} />
             </div>
           </div>
         </div>

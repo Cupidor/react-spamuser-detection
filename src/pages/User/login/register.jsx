@@ -44,13 +44,12 @@ const Register = () => {
           <div className={styles.main}>
             <Form {...layout} name="basic" ref={formUserRef}
               onFinish={handleSubmit}>
-              {/*<Form.Item name="type" label="您的角色" rules={[{ required: true }]}>
+              <Form.Item name="userType" label="您的角色" rules={[{ required: true }]}>
                 <Select>
-                  <Select.Option value="用户">用户</Select.Option>
-                  <Select.Option value="商家">商家</Select.Option>
+                  <Select.Option value="普通用户">普通用户</Select.Option>
                   <Select.Option value="管理员">管理员</Select.Option>
                 </Select>
-              </Form.Item>*/}
+              </Form.Item>
               <Form.Item
                 label="用户名"
                 name="uName"

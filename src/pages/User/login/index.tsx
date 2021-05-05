@@ -10,10 +10,19 @@ import styles from './index.less';
 /**
  * 此方法会跳转到 redirect 参数所在的位置
  */
-const goto = () => {
+const goto = (role: string) => {
   if (!history) return;
   setTimeout(() => {
-    history.push('/home');
+    switch (role) {
+      case '普通用户':
+        history.push('/weiboDetection');
+        break
+      case '管理员':
+        history.push('/home');
+        break
+      default:
+        break
+    }
   }, 10);
 };
 
@@ -33,7 +42,12 @@ const Login: React.FC = () => {
         message.success('登录成功！');
         localStorage.setItem('userName', msg.result.uname);
         localStorage.setItem('userId', msg.result.id);
-        goto()
+        localStorage.setItem('userType', msg.result.userType);
+        setInitialState({
+          ...initialState,
+          currentUser: msg.result,
+        });
+        goto(msg.result.userType)
       } else {
         message.error(msg.message);
       }

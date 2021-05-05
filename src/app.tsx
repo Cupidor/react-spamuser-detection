@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import { extend, ResponseError } from 'umi-request';
 import defaultSettings from '../config/defaultSettings';
 import logo from '../public/logo.png';
-import { queryUser } from '@/services/user';
+import { queryUserInfo } from '@/services/user_info';
 /**
  * 获取用户信息比较慢的时候会展示一个 loading
  */
@@ -23,15 +23,15 @@ export async function getInitialState(): Promise<{
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    /*try {
-      const userInfo = await queryUser(localStorage.getItem('userId'));
+    try {
+      const userInfo = await queryUserInfo({ userInfoId: localStorage.getItem('userId') });
       if (userInfo.result) {
         return userInfo.result;
       }
     } catch (error) {
       history.push('/user/login');
     }
-    return undefined;*/
+    return undefined;
   };
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {

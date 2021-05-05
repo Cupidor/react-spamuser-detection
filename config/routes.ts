@@ -26,6 +26,36 @@
     name: 'home',
     icon: 'Home',
     component: './Home/Home',
+    access: 'isAdministrator'
+  },
+  {
+    path: '/weiboManagement',
+    name: 'weiboManagement',
+    icon: 'Weibo',
+    component: './Home/WeiboManagement',
+    access: 'isAdministrator'
+  },
+  {
+    path: '/weiboDetail/:blogUserId',
+    name: 'weiboDetail',
+    icon: 'Weibo',
+    component: './Home/WeiboDetail',
+    hideInMenu: true,
+    access: 'isAdministrator'
+  },
+  {
+    path: '/userManagement',
+    name: 'userManagement',
+    icon: 'Team',
+    component: './Home/UserManagement',
+    access: 'isAdministrator'
+  },
+  {
+    path: '/weiboDetection',
+    name: 'weiboDetection',
+    icon: 'Weibo',
+    component: './Normal/Search',
+    access: 'isNomal'
   },
   {
     path: '/',
