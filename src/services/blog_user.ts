@@ -45,3 +45,12 @@ export async function checkBlogUser(params: any) {
     params,
   });
 }
+
+// 添加微博用户
+export async function createBlogUser(params: any) {
+  return request(`${api.blogUserUrl}create_blog_user`, {
+    method: 'POST',
+    requestType: 'form',
+    data: params,
+  });
+}

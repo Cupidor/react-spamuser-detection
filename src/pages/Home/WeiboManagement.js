@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Space, Typography, message, Modal, Table, Avatar, Popconfirm, Image } from 'antd';
+import { Space, Typography, message, Modal, Table, Avatar, Popconfirm, Image, Button, Form, Input } from 'antd';
 import global from '@/global.less';
 import Footer from '@/components/Footer';
-import { queryBlogByCondition, deleteBlogUser, queryFans, queryFollower } from '@/services/blog_user';
-import { numberDateFormat } from '@/utils/utils';
+import { queryBlogByCondition, createBlogUser, deleteBlogUser, queryFans, queryFollower } from '@/services/blog_user';
+import { PlusCircleOutlined } from '@ant-design/icons'
 import { history } from 'umi'
+const layout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 16 },
+};
+const formRef = React.createRef();
 
 const { Text, Title } = Typography;
 const { confirm } = Modal;
@@ -20,6 +25,7 @@ class Index extends PureComponent {
       total: 0,
       userType: '',
       tableLoading: false,
+      isModalVisible: false
     };
     this.info = null;
     this.userInfo = null;
@@ -130,8 +136,47 @@ class Index extends PureComponent {
     history.push(`/weiboDetail/${id}`)
   }
 
+  setModalStatus = (status) => {
+    this.setState({
+      isModalVisible: status
+    })
+  }
+
+  // 确定
+  handleOk = () => {
+    formRef.current.validateFields().then((values) => {
+      this.onFinish(values);
+    });
+  };
+
+  // 取消
+  handleCancel = () => {
+    formRef.current.setFieldsValue({ uuid: '' });
+    this.setModalStatus(false)
+  };
+
+  // 表单提交
+  onFinish = async (values) => {
+    this.setState({
+      confirmLoading: true,
+    });
+    let res = await createBlogUser({ ...values });
+    if (res.code === '0000') {
+      message.success(`添加成功`);
+      this.getAllBlogUser();
+      this.handleCancel()
+    } else {
+      if (res.message) {
+        message.error(res.message);
+      }
+    }
+    this.setState({
+      confirmLoading: false,
+    });
+  };
+
   render() {
-    const { users } = this.state;
+    const { users, isModalVisible, confirmLoading } = this.state;
     const columns = [
       /*{
         title: '创建时间',
@@ -234,17 +279,12 @@ class Index extends PureComponent {
         key: 'action',
         render: (text, record) => (
           <Space size="middle">
-            {/*<a style={{ color: 'green' }} onClick={this.editCurrentUser.bind(this, record)}>
-              编辑
-        </a>*/}
-            {record.is_manager !== true && (
-              <Popconfirm
-                title="确定删除该微博用户?"
-                onConfirm={this.deleteCurrentUser.bind(this, record.key)}
-              >
-                <a style={{ color: 'red' }}>删除</a>
-              </Popconfirm>
-            )}
+            <Popconfirm
+              title="确定删除该微博用户?"
+              onConfirm={this.deleteCurrentUser.bind(this, record.key)}
+            >
+              <a style={{ color: 'red' }}>删除</a>
+            </Popconfirm>
           </Space>
         ),
       },
@@ -257,7 +297,7 @@ class Index extends PureComponent {
               <Text style={{ fontSize: 16 }}>微博用户管理</Text>
             </div>
             <Space>
-              {/*<Search placeholder="请输入用户名或姓名" onSearch={this.onSearch} enterButton />*/}
+              <Button type='primary' onClick={this.setModalStatus.bind(this, true)}><PlusCircleOutlined />添加微博用户</Button>
             </Space>
           </div>
           <div className={global.MyBody}>
@@ -282,6 +322,22 @@ class Index extends PureComponent {
         <div className={global.MyFooter}>
           <Footer />
         </div>
+        <Modal
+          title="添加微博用户"
+          confirmLoading={confirmLoading}
+          visible={isModalVisible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}>
+          <Form {...layout} name="basic" ref={formRef}>
+            <Form.Item
+              label="微博ID"
+              name="uuid"
+              rules={[{ required: true, message: '请输入微博ID!' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     );
   }
