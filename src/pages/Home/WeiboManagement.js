@@ -13,6 +13,7 @@ const formRef = React.createRef();
 
 const { Text, Title } = Typography;
 const { confirm } = Modal;
+const { Search } = Input;
 
 class Index extends PureComponent {
   constructor(props) {
@@ -46,6 +47,7 @@ class Index extends PureComponent {
       offset: pageSize * (currentPage - 1),
       sortColumnName: 'register_time',
       sortOrderType: 'desc',
+      nickNameLike: searchValue
     });
     if (res.code === '0000') {
       for (let item of res.result) {
@@ -175,6 +177,19 @@ class Index extends PureComponent {
     });
   };
 
+  // 再次爬取
+  againCrawl = async (uuid) => {
+    let res = await createBlogUser({ uuid });
+    if (res.code === '0000') {
+      message.success(`再次爬取成功`);
+      this.getAllBlogUser();
+    } else {
+      if (res.message) {
+        message.error(res.message);
+      }
+    }
+  }
+
   render() {
     const { users, isModalVisible, confirmLoading } = this.state;
     const columns = [
@@ -193,7 +208,7 @@ class Index extends PureComponent {
         />,
       },
       {
-        title: '用户名',
+        title: '微博名',
         dataIndex: 'nickName',
         key: 'nickName',
       },
@@ -245,34 +260,50 @@ class Index extends PureComponent {
         ),
       },
       {
+        title: '爬取状态',
+        dataIndex: 'scrapyState',
+        key: 'scrapyState',
+        render: (text, record) => <span>{text ? "已完成" : <span>未完成<a onClick={this.againCrawl.bind(this, record.uuid)}>(再次爬取)</a></span>}</span>,
+      },
+      {
         title: '用户权威度',
         dataIndex: 'authority',
         key: 'authority',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
+        render: (text, record) => <a>
+          {record.scrapyState ? (text !== "-Infinity" ? text.toFixed(6) : text) : '--'}
+        </a>,
       },
       {
         title: '用户关注度',
         dataIndex: 'friendsRate',
         key: 'friendsRate',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
+        render: (text, record) => <a>
+          {record.scrapyState ? (text !== "-Infinity" ? text.toFixed(6) : text) : '--'}
+        </a>,
       },
       {
         title: '纯粉丝度',
         dataIndex: 'realFollow',
         key: 'realFollow',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
+        render: (text, record) => <a>
+          {record.scrapyState ? (text !== "-Infinity" ? text.toFixed(6) : text) : '--'}
+        </a>,
       },
       {
         title: '用户头像特征',
         dataIndex: 'headPortrait',
         key: 'headPortrait',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
+        render: (text, record) => <a>
+          {record.scrapyState ? (text !== "-Infinity" ? text.toFixed(6) : text) : '--'}
+        </a>,
       },
       {
         title: '近期活跃度',
         dataIndex: 'recentAtivity',
         key: 'recentAtivity',
-        render: text => <a>{text !== "-Infinity" ? text.toFixed(6) : text}</a>,
+        render: (text, record) => <a>
+          {record.scrapyState ? (text !== "-Infinity" ? text.toFixed(6) : text) : '--'}
+        </a>,
       },
       {
         title: '操作',
@@ -297,6 +328,7 @@ class Index extends PureComponent {
               <Text style={{ fontSize: 16 }}>微博用户管理</Text>
             </div>
             <Space>
+              <Search placeholder="请输入微博名" onSearch={this.onSearch} enterButton />
               <Button type='primary' onClick={this.setModalStatus.bind(this, true)}><PlusCircleOutlined />添加微博用户</Button>
             </Space>
           </div>

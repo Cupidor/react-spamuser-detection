@@ -127,7 +127,7 @@ function makeStepOption(option, data, centroids) {
     series: [{
       type: 'custom',
       encode: {
-        tooltip: [0, 1]
+        //tooltip: [0, 1]
       },
       renderItem: renderItemPoint,
       data: data
@@ -164,7 +164,7 @@ class Index extends PureComponent {
     })
     let res = await queryBlogByCondition(
       {
-        limit: 100,
+        limit: 200,
         offset: 0,
         scrapyState: true
       }
@@ -230,6 +230,7 @@ class Index extends PureComponent {
   }
 
   getOption() {
+    const { selectedTags } = this.state
     var step = ecStat.clustering.hierarchicalKMeans(this.state.originalData, {
       clusterCount: 3,
       outputType: 'single',
@@ -250,7 +251,7 @@ class Index extends PureComponent {
         orient: 'vertical',
         axisType: 'category',
         label: {
-          formatter: 'step {value}',
+          formatter: '步骤 {value}',
           position: 10
         },
         checkpointStyle: {
@@ -261,6 +262,8 @@ class Index extends PureComponent {
       baseOption: {
         animationDurationUpdate: ANIMATION_DURATION_UPDATE,
         tooltip: {
+          trigger: 'item',
+          formatter: `${selectedTags[0]},${selectedTags[1]}: {c0}`
         },
         xAxis: {
           type: 'value'

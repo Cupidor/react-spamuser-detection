@@ -22,6 +22,12 @@
     ],
   },
   {
+    path: '/personalSetting',
+    name: 'personalSetting',
+    component: './Home/PersonalSetting',
+    hideInMenu: true
+  },
+  {
     path: '/home',
     name: 'home',
     icon: 'Home',

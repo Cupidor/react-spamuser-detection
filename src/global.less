@@ -120,6 +120,31 @@ ol {
   .MyBody {
     height: calc(100% - 60px);
     display: flex;
+    .MyBodyLeft {
+      width: 300px;
+      padding: 10px 0;
+      border-right: 1px solid #d7d7d7;
+      .MyInfo {
+        height: 30px;
+        padding: 0 10px;
+      }
+      .MyListNoNew {
+        height: calc(100% - 30px);
+        width: 100%;
+        overflow-y: auto;
+      }
+      .MyList {
+        height: calc(100% - 60px - 30px);
+        width: 100%;
+        overflow-y: auto;
+      }
+      .MyNew {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
     .MyBodyRight {
       width: 100%;
       overflow-y: auto;

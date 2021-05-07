@@ -4,6 +4,7 @@ import global from '@/global.less';
 import Footer from '@/components/Footer';
 import { queryUserByCondition, deleteUserInfo } from '@/services/user_info';
 import { numberDateFormat } from '@/utils/utils';
+import NewUser from '@/pages/Home/components/NewUser'
 
 const { Text, Title } = Typography;
 const { confirm } = Modal;
@@ -20,8 +21,8 @@ class Index extends PureComponent {
       isNewUserVisible: false,
       userType: '',
       tableLoading: false,
+      operateType: ''
     };
-    this.info = null;
     this.userInfo = null;
   }
 
@@ -81,6 +82,23 @@ class Index extends PureComponent {
     );
   };
 
+  // 编辑用户
+  editCurrentUser = (record) => {
+    this.userInfo = record
+    this.setState({
+      operateType: '编辑用户'
+    }, () => {
+      this.setModalStatus(true)
+    })
+  }
+
+  // 弹窗状态
+  setModalStatus = (status) => {
+    this.setState({
+      isNewUserVisible: status
+    })
+  }
+
   // 删除用户
   deleteCurrentUser = async (id) => {
     let res = await deleteUserInfo({ userInfoId: id });
@@ -93,7 +111,7 @@ class Index extends PureComponent {
   };
 
   render() {
-    const { users } = this.state;
+    const { users, isNewUserVisible, operateType } = this.state;
     const columns = [
       {
         title: '创建时间',
@@ -122,9 +140,9 @@ class Index extends PureComponent {
         key: 'action',
         render: (text, record) => (
           <Space size="middle">
-            {/*<a style={{ color: 'green' }} onClick={this.editCurrentUser.bind(this, record)}>
+            <a style={{ color: 'green' }} onClick={this.editCurrentUser.bind(this, record)}>
               编辑
-        </a>*/}
+            </a>
             {record.is_manager !== true && (
               <Popconfirm
                 title="确定删除该系统用户?"
@@ -170,6 +188,13 @@ class Index extends PureComponent {
         <div className={global.MyFooter}>
           <Footer />
         </div>
+        <NewUser
+          visible={isNewUserVisible}
+          detail={this.userInfo}
+          title={operateType}
+          callBack={this.getAllUsers}
+          closeModal={this.setModalStatus}
+        ></NewUser>
       </div>
     );
   }

@@ -27,3 +27,12 @@ export async function deleteUserInfo(params: any) {
     data: params,
   });
 }
+
+// 更新系统用户
+export async function updateUserInfo(params: any) {
+  return request(`${api.userInfoUrl}update_user_info`, {
+    method: 'POST',
+    requestType: 'form',
+    data: params,
+  });
+}
