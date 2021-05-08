@@ -32,14 +32,14 @@
     name: 'home',
     icon: 'Home',
     component: './Home/Home',
-    access: 'isAdministrator'
+    //access: 'isAdministrator'
   },
   {
     path: '/weiboManagement',
     name: 'weiboManagement',
     icon: 'Weibo',
     component: './Home/WeiboManagement',
-    access: 'isAdministrator'
+    //access: 'isAdministrator'
   },
   {
     path: '/weiboDetail/:blogUserId',
@@ -47,7 +47,7 @@
     icon: 'Weibo',
     component: './Home/WeiboDetail',
     hideInMenu: true,
-    access: 'isAdministrator'
+    //access: 'isAdministrator'
   },
   {
     path: '/userManagement',
